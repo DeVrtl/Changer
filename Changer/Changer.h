@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-void OpenWriteAndCloseFile(std::ofstream& file, std::string text, std::string fileName)
+void OpenWriteAndCloseFile(std::ofstream& file, const std::string& text, const std::string& fileName)
 {
 	file.open(fileName);
 
@@ -14,7 +14,7 @@ void OpenWriteAndCloseFile(std::ofstream& file, std::string text, std::string fi
 	file.close();
 }
 
-std::string ReadFile(std::fstream& file, std::string line, std::string fileName)
+std::string ReadFile(std::fstream& file, std::string& line, const std::string& fileName)
 {
 	file.open(fileName);
 
@@ -26,16 +26,23 @@ std::string ReadFile(std::fstream& file, std::string line, std::string fileName)
 		}
 	}
 
-	return line;
 	file.close();
+	return line;
 }
 
-std::string ReplaceWord(std::string text, std::string whatToReplace, std::string replacementText)
+std::string ReplaceWord(std::string& text, const std::string& whatToReplace, const std::string& replacementText)
 {
 	size_t position = 0;
 
-	while ((position = text.find(whatToReplace, position)) != std::string::npos)
+	while (true)
 	{
+		position = text.find(whatToReplace, position);
+
+		if (std::string::npos == position)
+		{
+			break;
+		}
+
 		text.replace(position, whatToReplace.length(), replacementText);
 		position += replacementText.length();
 	}
